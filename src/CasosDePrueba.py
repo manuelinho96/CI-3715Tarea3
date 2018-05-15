@@ -15,7 +15,7 @@ class Test(unittest.TestCase):
 
 
     def tearDown(self):
-        pass
+        self.prueba = None
 
     #Caso inicial para probar formato de email
     def test_emailIncorrecto(self):
@@ -95,7 +95,26 @@ class Test(unittest.TestCase):
     #Caso malicioso cuando la clave tiene menos de 3 letras
     def test_claveMenosDe3Letras(self):
         self.validar = self.prueba.registrarUsuario("hola@s.com", "Ma123456","Ma123456")
-        self.assertEqual(-3, self.validar)        
+        self.assertEqual(-3, self.validar)
+    
+    #Caso interior usuario registrado y aceptado al ingresar.
+    def test_usuarioaceptado(self):
+        self.registro = self.prueba.registrarUsuario("13-11223@usb.ve", "Manuel123","Manuel123")
+        self.validar = self.prueba.IngresarUsuario("13-11223@usb.ve", "Manuel123")
+        self.assertEqual(0, self.validar)
+    
+    #Caso esquina usuario no registrado y intenta ingresar al sistema.
+    def test_ingresousuarionoregistrado(self):
+        self.prueba.diccionario = None
+        self.validar = self.prueba.IngresarUsuario("13-11223@usb.ve", "Manuel123")
+        self.assertEqual(-4, self.validar)
+    
+    #Caso esquina usuario registrado y intenta ingresar al sistema con clave invalida
+    def test_ingresousuarioclaveinvalida(self):
+        self.registro = self.prueba.registrarUsuario("13-11223@usb.ve", "Manuel123","Manuel123")
+        self.validar = self.prueba.IngresarUsuario("13-11223@usb.ve", "Manuel1234")
+        self.assertEqual(-5, self.validar)
+            
 
         
 if __name__ == "__main__":
