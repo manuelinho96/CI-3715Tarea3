@@ -1,6 +1,10 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.template import loader
+from .models import Seguridad
+
+# Iniciamos la clase seguridad
+SeguridadClass = Seguridad()
 
 # Create your views here.
 def index(request):
@@ -8,7 +12,9 @@ def index(request):
         #getting values from post
         user = request.POST.get('username')
         passwd = request.POST.get('pass')
+        passwd2 = request.POST.get('pass2')
         template = loader.get_template('show.html')
+        
         context = {
             'User': user,
             'Paswd': passwd[::-1]
