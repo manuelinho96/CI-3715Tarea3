@@ -20,7 +20,7 @@ def index(request):
             return  HttpResponseRedirect('login')
         else:
             messages.info(request, validarRegistro[1])
-            return  HttpResponseRedirect('registroinvalido')
+            return  HttpResponseRedirect('registro')
     else:
         template = loader.get_template('SistLogin/index.html')
         return HttpResponse(template.render(None,request))
@@ -30,13 +30,17 @@ def login(request):
         #getting values from post
         user = request.POST.get('username')
         passwd = request.POST.get('pass')
-        passwd2 = request.POST.get('pass2')
-        validarRegistro = SeguridadClass.registrarUsuario(user, passwd, passwd2)
+        validarRegistro = SeguridadClass.IngresarUsuario(user, passwd)
         if validarRegistro[0] == 0:
-            template = loader.get_template('iniciosesion.html')
-            return HttpResponseRedirect('login', mensaje = validarRegistro[1])
+            messages.success(request, validarRegistro[1])
+            return HttpResponseRedirect('menu')
         else:
-            pass
+            messages.info(request, validarRegistro[1])
+            return  HttpResponseRedirect('logininvalido')
     else:
         template = loader.get_template('SistLogin/iniciosesion.html')
         return HttpResponse(template.render(None,request))
+    
+def menu(request):
+    template = loader.get_template('SistLogin/menu.html')
+    return HttpResponse(template.render(None,request))
