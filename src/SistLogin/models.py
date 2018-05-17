@@ -1,7 +1,5 @@
-from django.db import models
 import re
 
-# Create your models here.
 # Definicion de la clase seguridad
 class Seguridad:
     
@@ -14,7 +12,10 @@ class Seguridad:
         esvalido = self.validarargumentos(correo, clave1, clave2)
         if esvalido[0] != 0:
             return esvalido
-        # No hubo errores se codifica el string con un reverse
+        #Se verifica que el usuario no este registrado en el sistema
+        if self.diccionario.get(correo) != None:
+            return (-6,"Usuario ya registrado")
+        # No hubo errores, se codifica el string con un reverse
         claveCodificada = clave1[::-1]
         # Se registra el usuario
         self.diccionario[correo] = claveCodificada
@@ -23,7 +24,7 @@ class Seguridad:
     # Funcion que dado un correo y una clave
     # realiza el intento de inicio de sesion de un usuario
     def IngresarUsuario(self,correo,clave):
-        # Se verifica que el correo y las claves sean validas
+        # Se verifica que el correo y la clave sean validas
         esvalido = self.validarargumentos(correo, clave, clave)
         if esvalido[0] != 0:
             return esvalido
@@ -48,8 +49,8 @@ class Seguridad:
         print(string)
         return (0,string)
     
-    # Funcion que verifica que el correo sea valido
-    # La contraseña cumpla con los requisitos especificados
+    # Funcion que verifica que el correo sea valido y
+    # la contraseña cumpla con los requisitos especificados
     def validarargumentos(self, correo, clave1, clave2):
         # Se verifica que el correo es valido.
         try:
@@ -86,9 +87,9 @@ class Seguridad:
         except:
             if (string==""):
                 if (len(clave1) < 8):
-                    string = "La clave tiene menos de 8 caracteres"
+                    string = "La clave debe tener mas de 8 caracteres"
                 elif (len(clave1) > 16):
-                    string = "La clave tiene mas de 16 caracteres"
+                    string = "La clave debe tener menos de 16 caracteres"
                 else:
                     if (digitos < 1):
                         string = "La clave debe tener al menos un digito"

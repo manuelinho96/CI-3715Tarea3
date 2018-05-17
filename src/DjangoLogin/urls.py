@@ -17,6 +17,6 @@ from django.contrib import admin
 from django.urls import include, path
 
 urlpatterns = [
-    path('',include('SistLogin.urls')),
+    path('',include('SistLogin.urls')), #incluir las urls de la app creada
     path('admin/', admin.site.urls),
 ]

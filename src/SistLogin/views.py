@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib import messages
 from django.template import loader
@@ -21,7 +20,7 @@ def registro(request):
             messages.success(request, validarRegistro[1])
             return  HttpResponseRedirect('login')
         else:
-            # Rerijo a la pagina de registro con el mensaje de error correspondiente
+            # Redirijo a la pagina de registro con el mensaje de error correspondiente
             messages.info(request, validarRegistro[1])
             return  HttpResponseRedirect('registro')
     else:
